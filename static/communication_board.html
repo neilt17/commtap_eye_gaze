@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Communication Board</title>
+  <link href="resources/board.css" rel="stylesheet">
+  <!-- If using wih Drupal, say, ensure the page loads this version of jQuery
+  rather than the usual one -->
+
+</head>
+<body>
+<div id="board">
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="board-cell">
+    <div class="board-cell-content">
+      <img src="symbols/fall.png"/>
+      <div class="display-text">Fall over Neil!</div>
+      <audio src="speech/fall-over-neil.mp3">Your browser does not support this audio feature.</audio>
+    </div>
+  </div>
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="clear"></div>
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="board-cell change-page" data-jump-to-page="communication_board_2.html">
+    <div class="board-cell-content">
+      <img src="symbols/transport.png"/>
+      <div class="display-text">TRANSPORT</div>
+      <!-- No audio on change page cell - have this play on the new page when that loads -->
+    </div>
+  </div>
+</div>
+  <canvas id="dwell-timer-canvas" width="2000" height="1000"></canvas>
+<script src="resources/jquery-1.12.0.js"></script>
+<script src="resources/board.js"></script>
+</body>
+</html>

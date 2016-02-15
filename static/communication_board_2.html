@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Transport</title>
+  <link href="resources/board.css" rel="stylesheet">
+  <!-- If using wih Drupal, say, ensure the page loads this version of jQuery
+  rather than the usual one -->
+
+</head>
+<body>
+<div id="board">
+  <audio src="speech/transport.mp3" class="title-audio">Your browser does not support this audio feature.</audio>
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="board-cell">
+    <div class="board-cell-content">
+      <img src="symbols/bus.svg"/>
+      <div class="display-text">bus</div>
+      <audio src="speech/bus.mp3">Your browser does not support this audio feature.</audio>
+    </div>
+  </div>
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="clear"></div>
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="board-cell"><div class="board-cell-content"></div></div>
+  <div class="board-cell">
+    <div class="board-cell-content">
+      <img src="symbols/car.svg"/>
+      <div class="display-text">car</div>
+      <audio src="speech/car.mp3">Your browser does not support this audio feature.</audio>
+    </div>
+  </div>
+</div>
+  <canvas id="dwell-timer-canvas" width="2000" height="1000"></canvas>
+<script src="resources/jquery-1.12.0.js"></script>
+<script src="resources/board.js"></script>
+</body>
+</html>
