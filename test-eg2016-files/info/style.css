@@ -1,0 +1,22 @@
+body {
+  font-family: arial, helvetica, sans-serif;
+}
+
+div.title {
+
+}
+
+div.navigation {
+  width: 200px;
+  float: left;
+}
+
+div.content {
+  width: 70%;
+  float: left;
+}
+
+div.clear {
+  clear: both;
+}
+

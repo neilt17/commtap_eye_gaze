@@ -2,8 +2,8 @@ body {
   background-color: #444444;
 }
 
-div.board {
-
+#board {
+  width: 100%;
 }
 
 div.board-cell {
@@ -30,13 +30,13 @@ div.board-cell-content {
 }
 
 div.board-cell-content .display-text {
-  font-size: 2em;
+  font-size: 200%;
   font-family: arial, helvetica, sans-serif;
 }
 
 /* For testing purposes only - in use images will be sized appropriately */
 div.board-cell-content img {
-  width: 150px;
+  height: 70%;
 }
 
 div.board-cell.activated {

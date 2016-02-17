@@ -11,6 +11,19 @@
  * speak this by looking at it (or at an icon to the right of it)
  * Rest cell - nothing happens.
  *
+ * Audio formats:
+ * - provide WAV option as mp3 not always available due to patenting;
+ * - provide mp3 option
+ * See: https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats
+ * Chrome has ? for all audio formats in mobile
+ * Vorbis in ogg should also give us opera mobile
+ * On desktop wav covers everything except IE (9) - but that will do mp3
+ * See: http://hpr.dogphilosophy.net/test/ to test out browsers
+ *
+ * the following styles should be in the style attribute on the page:
+ * - border colour
+ * - border colour - active - is in css - could be change in opacity? lightness?
+ *
  *
  */
 
@@ -21,7 +34,11 @@ var App = {
     dwellTimeSeconds: 2,
     dwellTimerRadius: 40,
     dwellTimerColor: '#ff0000',
-    dwellTimerOpacity: 0.01
+    dwellTimerOpacity: 0.01,
+    cellsAcross: 3,
+    cellsDown: 2,
+    cellBorderWidth: 8,
+    cellMargin: 6
   },
 
   dweller: {
@@ -102,14 +119,28 @@ var App = {
     App.dweller.savedTime = 0;
   },
 
-  sizeCanvas: function() {
+  sizeBoardElements: function() {
     var board_width = $(window).width();
     var board_height = $(window).height();
     // this is the way to resize the canvas without it scaling its contents:
     var canvas = document.getElementById("dwell-timer-canvas");
     canvas.width = board_width;
     canvas.height = board_height;
+
+    var cell_height = (board_height/App.settings.cellsDown) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
+
+
+    var cell_width = (board_width/App.settings.cellsAcross) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
+
+    $('.board-cell').height(cell_height);
+    $('.board-cell').width(cell_width);
+
+    // cell font-size:
+    var display_text_div_height = $('div.board-cell-content .display-text').height();
+    $('div.board-cell-content .display-text').css('font-size', cell_height/4);
+
   }
+
 };
 
 App.timerId = null;
@@ -122,7 +153,7 @@ $(document).ready(function () {
     title_audio.play();
   }
 
-  App.sizeCanvas();
+  App.sizeBoardElements();
 
   $(".board-cell").mouseenter(function () {
     $(this).addClass('activated');
@@ -137,5 +168,5 @@ $(document).ready(function () {
 });
 
 $(window).resize(function() {
-  App.sizeCanvas();
+  App.sizeBoardElements();
 });

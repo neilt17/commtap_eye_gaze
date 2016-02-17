@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-  <meta charset="UTF-8">
-  <title>Communication Board</title>
-  <link href="start.css" rel="stylesheet">
-</head>
-<body>
 <ul>
   <li><a href="/test-eg2016-files/static/communication_board.html">Eye gaze AAC test page</a></li>
   <li><a href="/test-eg2016-files/info/explanation.html">Explanation</a></li>
 </ul>
-
-</body>
-</html>

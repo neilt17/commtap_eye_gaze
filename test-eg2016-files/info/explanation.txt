@@ -1,0 +1,41 @@
+The purpose of this is to:
+* be able to create specifically eye gaze communication pages (it will be adaptable for click/tap access and also for switches);
+* be able to view the communication pages and page sets without any specialist software - i.e. in a browser;
+* be able to save communication pages and page sets onto any computer and be able to use them - even if the original software for making them has gone, and without needing any internet connection;
+* it would be possible to edit the pages without any specialist software as well - HTML could be edited directly;
+* allow us to create communication pages specifically for the children we work with, having the features that is useful for them.
+
+<h2>So far</h2>
+Two sample communication pages have been made. These demonstrate:
+<ul>
+<li>A visible dwell timer on pages - dwell time is configurable, the dwell image could also be configurable;</li>
+<li>The dwell timer starts when the mouse enters a cell (or user gazes into the cell), and stops when either the mouse leaves the cell or the timer reaches the activation time;</li>
+<li>On reaching the activation time, the following actions have been configured:</li>
+<ul>
+<li>A message is played;</li>
+<li>or, you are directed to another page (a message is played when the new page is loaded)</li>
+<li></li>
+</ul>
+</ul>
+
+<h2>Voices</h2>
+Uses eSpeak voices - can be scripted server side, saved into WAV files and converted again (using LAME) into mp3 files. mp3 is theoretically compatible with more browsers - allegedly all - though this may depend on the OS. See also below.
+
+<h2>Symbols</h2>
+opensymbols.org has an api for searching a number of Creative Commons licensed symbols databases. Many of the symbols that this returns are not for commercial use - which could present a problem if we wanted to charge for access or if this is part of an offering of a subscription access site.
+
+
+<h2>Browser compatibility</h2>
+The pages use HTML5 for:
+* creating the dwell timer image;
+* playing the audio;
+
+There is no problem with the timer image for HTML5 compatible browsers - all modern browsers (except for an up to date FireFox on an old MacBook so far - has problems doing the redrawing for this);
+
+The &lt;audio&gt; element is supposedly implemented in all modern browsers and mp3 files should also be playable: this seems to be so on PCs, but not on tablets:
+- recent Nexus with Android 6x - works on FireFox (v44) but not Chrome;
+- Android 4x does not work on FireFox or Chrome
+- iPad mini - does not work on Safari or Chrome
+All seem to recognise the &lt;audio&gt; element (the text between the tags does not appear), but don't play anything - this <em>could</em> be linked with mp3 licensing - although wav files don't play either.
+As the main target is Windows machines - where the &lt;audio&gt; element functions as expected then we're probably alright at the moment: and hopefully the Android/iOS browsers will sort themselves out.
+
