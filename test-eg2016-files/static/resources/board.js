@@ -137,7 +137,7 @@ var App = {
 
     // cell font-size:
     var display_text_div_height = $('div.board-cell-content .display-text').height();
-    $('div.board-cell-content .display-text').css('font-size', cell_height/4);
+    $('div.board-cell-content .display-text').css('font-size', cell_height/8);
 
   }
 
