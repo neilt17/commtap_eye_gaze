@@ -7,7 +7,7 @@ body {
 }
 
 div.board-cell {
-  background-color: transparent;
+  background-color: #fff;
   margin: 6px;
   padding: 0;
   border: solid 8px red;
@@ -40,7 +40,9 @@ div.board-cell-content img {
 }
 
 div.board-cell.activated {
-  border: solid 8px blue;
+  /* Have class on each cell for each type e.g. verb/noun etc. - js has a colour for each state - activated and non-activated - which it can apply as appropriate. We have to use rgba and not opacity for this whatever. Could alternatively set border to go dotted or dashed or... to go double like here - which might be the best/easiest option*/
+  /*border: double 8px rgba(255, 0, 0, 0.5);*/
+  border-style: double;
 }
 
 /*dwell timer*/
