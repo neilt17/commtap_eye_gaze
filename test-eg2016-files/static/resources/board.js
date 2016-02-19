@@ -88,10 +88,10 @@ var App = {
     if (endangle > Math.PI * 2) {
       var audio = $('audio', context).get(0);
       if (audio !== undefined) {
-        //$('audio', context).get(0).play();
-        var audioElement = $('audio', context).get(0);
-        audioElement.load();
-        App.playWhenReady(audioElement);
+        audio.load();
+        $('audio', context).attr('controls', 'true');
+        App.playWhenReady(audio);
+        $('audio', context).removeAttr('controls');
       }
       App.dwellTimerStop();
 
