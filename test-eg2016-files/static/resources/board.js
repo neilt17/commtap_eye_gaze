@@ -91,9 +91,13 @@ var App = {
         audio.load();
         $('audio', context).attr('controls', 'true');
         App.playWhenReady(audio);
-        $('audio', context).removeAttr('controls');
+        //$('audio', context).removeAttr('controls');
       }
       App.dwellTimerStop();
+
+      $('audio', context).on('ended', function() {
+        $('audio').removeAttr('controls', context);
+      });
 
       if ($(context).attr('data-jump-to-page') !== undefined) {
         window.location.href = $(context).attr('data-jump-to-page');
