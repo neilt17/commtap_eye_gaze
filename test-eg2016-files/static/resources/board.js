@@ -88,7 +88,8 @@ var App = {
     if (endangle > Math.PI * 2) {
       var audio = $('audio', context).get(0);
       if (audio !== undefined) {
-        $('audio', context).attr('controls', 'true');
+        $('audio', context).attr('autoplay', 'autoplay');
+        $('audio', context).attr('controls', 'controls');
         audio.load();
         App.playWhenReady(audio);
         //$('audio', context).removeAttr('controls');
