@@ -89,7 +89,9 @@ var App = {
       var audio = $('audio', context).get(0);
       if (audio !== undefined) {
         //$('audio', context).get(0).play();
-        App.playWhenReady($('audio', context).get(0));
+        var audioElement = $('audio', context).get(0);
+        audioElement.load();
+        App.playWhenReady(audioElement);
       }
       App.dwellTimerStop();
 
@@ -158,7 +160,7 @@ var App = {
       alert("Something went wrong!\n" + errorText[audioElement.error.code]);
     }
     else { //check for media ready again in half a second
-      setTimeout(App.playWhenReady, 500, audioElement);
+      setTimeout(App.playWhenReady, 100, audioElement);
     }
   }
 
@@ -173,6 +175,7 @@ $(document).ready(function () {
   var title_audio = $('audio.title-audio').get(0);
   if (title_audio !== undefined) {
     //title_audio.play();
+    title_audio.load();
     App.playWhenReady(title_audio);
   }
 
