@@ -61,7 +61,7 @@ var App = {
     var x = offset.left + $('.board-cell-content', context).width() / 2;
     var y = offset.top + $('.board-cell-content', context).height() / 2;
 
-    var targetTimePassed = App.settings.dwellTimeSeconds * 1000/360;
+    var targetTimePassed = App.settings.dwellTimeSeconds * 1000 / 360;
     var currentTime = new Date().getTime();
     if (!App.dweller.savedTime) {
       App.angle = App.angle + 1;
@@ -69,7 +69,7 @@ var App = {
     else {
       // Keeps the timer icon moving to schedule even if there are execution
       // delays:
-      App.angle = App.angle + 1 * (currentTime - App.dweller.savedTime)/targetTimePassed;
+      App.angle = App.angle + 1 * (currentTime - App.dweller.savedTime) / targetTimePassed;
     }
     App.dweller.savedTime = currentTime;
 
@@ -88,18 +88,20 @@ var App = {
     if (endangle > Math.PI * 2) {
       var audio = $('audio', context).get(0);
       if (audio !== undefined) {
-        $('audio', context).get(0).play();
+        //$('audio', context).get(0).play();
+        App.playWhenReady($('audio', context).get(0));
       }
       App.dwellTimerStop();
 
       if ($(context).attr('data-jump-to-page') !== undefined) {
         window.location.href = $(context).attr('data-jump-to-page');
-      };
+      }
+      ;
 
     }
   },
 
-  dwellShapeClear: function(context) {
+  dwellShapeClear: function (context) {
     var canvas = $('#dwell-timer-canvas')[0];
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -110,7 +112,7 @@ var App = {
     if (App.timerId) {
       return;
     }
-    var interval = App.settings.dwellTimeSeconds * 1000/360;
+    var interval = App.settings.dwellTimeSeconds * 1000 / 360;
     App.timerId = setInterval(App.dwellAction, interval, context);
   },
 
@@ -122,7 +124,7 @@ var App = {
     App.dweller.savedTime = 0;
   },
 
-  sizeBoardElements: function() {
+  sizeBoardElements: function () {
     var board_width = $(window).width();
     var board_height = $(window).height();
     // this is the way to resize the canvas without it scaling its contents:
@@ -130,19 +132,36 @@ var App = {
     canvas.width = board_width;
     canvas.height = board_height;
 
-    var cell_height = (board_height/App.settings.cellsDown) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
+    var cell_height = (board_height / App.settings.cellsDown) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
 
 
-    var cell_width = (board_width/App.settings.cellsAcross) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
+    var cell_width = (board_width / App.settings.cellsAcross) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
 
     $('.board-cell').height(cell_height);
     $('.board-cell').width(cell_width);
 
     // cell font-size:
     var display_text_div_height = $('div.board-cell-content .display-text').height();
-    $('div.board-cell-content .display-text').css('font-size', cell_height/8);
+    $('div.board-cell-content .display-text').css('font-size', cell_height / 8);
 
+  },
+
+  playWhenReady: function (audioElement) {
+    //wait for media element to be ready, then play
+    var audioReady = audioElement.readyState;
+
+    if (audioReady > 2) {
+      audioElement.play();
+    }
+    else if (audioElement.error) { //For testing only!
+      var errorText = ['(no error)', 'User interrupted download', 'Network error caused interruption', 'Miscellaneous problem with media data', 'Cannot actually decode this media'];
+      alert("Something went wrong!\n" + errorText[audioElement.error.code]);
+    }
+    else { //check for media ready again in half a second
+      setTimeout(App.playWhenReady, 500, audioElement);
+    }
   }
+
 
 };
 
@@ -153,7 +172,8 @@ $(document).ready(function () {
 
   var title_audio = $('audio.title-audio').get(0);
   if (title_audio !== undefined) {
-    title_audio.play();
+    //title_audio.play();
+    App.playWhenReady(title_audio);
   }
 
   App.sizeBoardElements();
@@ -170,6 +190,6 @@ $(document).ready(function () {
 
 });
 
-$(window).resize(function() {
+$(window).resize(function () {
   App.sizeBoardElements();
 });
