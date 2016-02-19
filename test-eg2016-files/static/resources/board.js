@@ -24,6 +24,9 @@
  * - border colour
  * - border colour - active - is in css - could be change in opacity? lightness?
  *
+ * Check: view-source:http://hpr.dogphilosophy.net/test/ to see if we can get
+ * this to play on iPad, tablets...
+ *
  *
  */
 
