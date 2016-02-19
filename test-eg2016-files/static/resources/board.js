@@ -28,6 +28,13 @@
  * this to play on iPad, tablets...
  *
  *
+ * Audio formats fine for tablets, but, generally they seem to need to have the
+ * controls, and, will only first play if a control is used to play the audio.
+ * So you have to display a control AND you have to press the control button.
+ * Maybe flash might do what we want, maybe downloaded to the device will do it
+ * ....
+ * Maybe a click event would ripple through and be ok???
+ *
  */
 
 var App = {
@@ -41,7 +48,9 @@ var App = {
     cellsAcross: 3,
     cellsDown: 2,
     cellBorderWidth: 8,
-    cellMargin: 6
+    cellMargin: 6,
+    showAudioControls: 0,
+    accessMethod: "click" // "gaze", "click" ...
   },
 
   dweller: {
@@ -86,25 +95,29 @@ var App = {
 
     // Action when dwell time reached:
     if (endangle > Math.PI * 2) {
-      var audio = $('audio', context).get(0);
-      if (audio !== undefined) {
-        $('audio', context).attr('autoplay', 'autoplay');
-        $('audio', context).attr('controls', 'controls');
-        audio.load();
-        App.playWhenReady(audio);
-        //$('audio', context).removeAttr('controls');
-      }
+      App.activatedCellAction(context);
       App.dwellTimerStop();
+    }
+  },
 
-      $('audio', context).on('ended', function() {
-        $('audio').removeAttr('controls', context);
-      });
-
-      if ($(context).attr('data-jump-to-page') !== undefined) {
-        window.location.href = $(context).attr('data-jump-to-page');
+  activatedCellAction: function (context) {
+    var audio = $('audio', context).get(0);
+    if (audio !== undefined) {
+      $('audio', context).attr('autoplay', 'autoplay');
+      if (App.settings.showAudioControls === 1) {
+        $('audio', context).attr('controls', 'controls');
       }
-      ;
+      audio.load();
+      App.playWhenReady(audio);
+      //$('audio', context).removeAttr('controls');
+    }
 
+    $('audio', context).on('ended', function() {
+      $('audio').removeAttr('controls', context);
+    });
+
+    if ($(context).attr('data-jump-to-page') !== undefined) {
+      window.location.href = $(context).attr('data-jump-to-page');
     }
   },
 
@@ -148,6 +161,7 @@ var App = {
     $('.board-cell').width(cell_width);
 
     // cell font-size:
+    // TODO: image size when sizing in either direction
     var display_text_div_height = $('div.board-cell-content .display-text').height();
     $('div.board-cell-content .display-text').css('font-size', cell_height / 8);
 
@@ -186,15 +200,26 @@ $(document).ready(function () {
 
   App.sizeBoardElements();
 
-  $(".board-cell").mouseenter(function () {
-    $(this).addClass('activated');
-    App.dwellTimerStart(this);
-  });
+  if (App.settings.accessMethod === 'gaze') {
+    $(".board-cell").mouseenter(function () {
+      $(this).addClass('activated');
+      App.dwellTimerStart(this);
+    });
 
-  $(".board-cell").mouseleave(function () {
-    $(this).removeClass('activated');
-    App.dwellTimerStop(this);
-  });
+    $(".board-cell").mouseleave(function () {
+      $(this).removeClass('activated');
+      App.dwellTimerStop(this);
+    });
+  }
+  else if (App.settings.accessMethod === 'click') {
+    $(".board-cell").click(function () {
+      $(this).addClass('activated');
+      App.activatedCellAction(this);
+    });
+    $('audio').on('ended', function() {
+      $('.board-cell').removeClass('activated');
+    });
+  }
 
 });
 
