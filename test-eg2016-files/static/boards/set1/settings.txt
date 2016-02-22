@@ -1,0 +1,7 @@
+dwellTimeSeconds: 2
+dwellTimerRadius: 40
+dwellTimerColor: #ff0000
+dwellTimerOpacity: 0.01
+cellBorderWidth: 8
+cellMargin: 6
+accessMethod: gaze

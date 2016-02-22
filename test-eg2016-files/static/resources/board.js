@@ -35,13 +35,14 @@
  * ....
  * Maybe a click event would ripple through and be ok???
  *
+ * TODO: semantic colours - check colourful semantics
+ *
  */
 
 var App = {
 
   settings: {
-    soundOn: true,
-    dwellTimeSeconds: 2,
+    dwellTimeSeconds: 1,
     dwellTimerRadius: 40,
     dwellTimerColor: '#ff0000',
     dwellTimerOpacity: 0.01,
@@ -50,7 +51,7 @@ var App = {
     cellBorderWidth: 8,
     cellMargin: 6,
     showAudioControls: 0,
-    accessMethod: "click" // "gaze", "click" ...
+    accessMethod: "gaze" // "gaze", "click" ...
   },
 
   dweller: {
