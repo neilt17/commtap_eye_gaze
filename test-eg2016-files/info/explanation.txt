@@ -6,15 +6,15 @@ The purpose of this is to:
 * allow us to create communication pages specifically for the children we work with, having the features that is useful for them.
 
 <h2>So far</h2>
-Two sample communication pages have been made. These demonstrate:
+Some sample communication pages have been made. These demonstrate:
 <ul>
-<li>A visible dwell timer on pages - dwell time is configurable, the dwell image could also be configurable;</li>
+<li>A visible dwell timer on pages - dwell time is configurable (not via the site yet - though you can add &amp;dwell=0.5 - for 0.5 seconds dwell to the end of the address of a page to configure this at the moment), the dwell image could also be configurable;</li>
 <li>The dwell timer starts when the mouse enters a cell (or user gazes into the cell), and stops when either the mouse leaves the cell or the timer reaches the activation time;</li>
 <li>On reaching the activation time, the following actions have been configured:</li>
 <ul>
 <li>A message is played;</li>
 <li>or, you are directed to another page (a message is played when the new page is loaded)</li>
-<li></li>
+<li>Automatice creation of AAC pages when sound/text/image files are placed in particular directories</li>
 </ul>
 </ul>
 

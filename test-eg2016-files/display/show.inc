@@ -51,7 +51,11 @@ function show_page_list($set) {
   $links = array();
   foreach ($boards as $board) {
 
-    $links[] = l($board, 'display.php', array(
+    $cell_counts = aac_cell_count($set, $board);
+
+    $link_text = $board . ' (' . $cell_counts['rows'] . 'x' . $cell_counts['cols'] . ')';
+
+    $links[] = l($link_text, 'display.php', array(
       'query' => array(
         'set' => $set,
         'board' => $board
@@ -102,10 +106,11 @@ function show_board($set, $board) {
         $pathinfo = pathinfo($cell_file);
         switch ($pathinfo['filename']) {
           case 'audio':
+          case 'sound':
             $data['audio'][] = url($board_local_path . '/' . $cell . '/' . $cell_file);
             break;
           case 'display':
-            if (file_exists($board_path . '/' . $cell_file)) {
+            if (file_exists($board_path . '/' . $cell . '/' . $cell_file)) {
               $data['display'] = check_plain(file_get_contents($board_path . '/' . $cell . '/' . $cell_file));
             }
             else {
@@ -124,7 +129,14 @@ function show_board($set, $board) {
     return 'Nothing to display.';
   }
 
+  $dwell_time = '';
+  if (!empty($_GET['dwell']) && is_numeric($_GET['dwell'])) {
+    $dwell = $_GET['dwell'];
+    $dwell_time = "dwellTimeSeconds: $dwell,";
+  }
+
   $json = "{
+    $dwell_time
     cellsAcross: $cols,
     cellsDown: $rows
   }";
@@ -143,3 +155,34 @@ function show_board($set, $board) {
 
 }
 
+function aac_cell_count($set, $board) {
+
+  // Get rows and columns
+  // Directory must be of the form 1,1-
+  global $global_settings;
+
+  $board_local_path = 'static/boards/' . $set . '/' . $board;
+  $board_path = $global_settings['root_path'] . $global_settings['start_path'] . '/' . $board_local_path;
+
+  if (!is_dir($board_path)) {
+    return FALSE;
+  }
+
+  $cells = array_diff(scandir($board_path), array('..', '.'));
+
+  $rows = 0;
+  $cols = 0;
+  foreach ($cells as $cell) {
+    $parts = explode('-', $cell);
+    $row_col = explode(',', $parts[0]);
+    $row = $row_col[0];
+    $col = $row_col[1];
+    if (is_numeric($row) && is_numeric($col)) {
+      $rows = max($rows, $row);
+      $cols = max($cols, $col);
+    }
+  }
+
+  return array('rows' => $rows, 'cols' => $cols);
+
+}
