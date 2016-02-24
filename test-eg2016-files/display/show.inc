@@ -2,6 +2,29 @@
 
 // put specific css and js settings on the page
 
+/**
+ *
+ * TODO: enable printing - normal and etran frame;
+ * TODO: etran frame printing: print for front and back - page numbers on
+ * back, goto cells - display goto page number on back
+ * TODO: etran - sizing, e.g. offer A2, A3, A4 or custom
+ * TODO: etran - size of boarder where pictures are positioned/size of pictures
+ * (as settings)
+ * TODO: allow message to repeated if stay dwelling in cell - e.g. delay after
+ * it speaks - configure on/off
+ * TODO: for each board set, can invite others to view and edit it - to a
+ * maximum - perhaps 0 if no subscription
+ * TODO: in editing - allow cells to be swapped - you choose then swap them
+ * TODO: enable uploading of own symbols probably easiest/best...
+ * TODO: in js - something is not resizing when browser resizes;
+ * 
+ *
+ *
+ *
+ *
+ *
+ */
+
 function show_page() {
   if (empty($_GET['set'])) {
     $content = show_set_list();
@@ -141,6 +164,8 @@ function show_board($set, $board) {
     cellsDown: $rows
   }";
 
+  // TODO: count up to rows and cols with i - if $board_cell is empty - display
+  // a blank cell.
   $content = '';
   foreach ($board_data['cells'] as $row_index => $board_row) {
     foreach ($board_row as $col_index => $board_cell) {

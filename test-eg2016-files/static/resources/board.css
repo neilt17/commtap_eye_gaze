@@ -17,6 +17,17 @@ div.board-cell {
   height: 200px;
  }
 
+div.blank-board-cell {
+  background-color: black;
+  margin: 6px;
+  padding: 0;
+  border: solid 8px black;
+  float: left;
+  width: 30%;
+  /* Will need to resize according to browser height */
+  height: 200px;
+}
+
 div.board-cell.change-page {
   border-color: grey;
 }

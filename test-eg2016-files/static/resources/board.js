@@ -158,8 +158,8 @@ var App = {
 
     var cell_width = (board_width / App.settings.cellsAcross) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
 
-    $('.board-cell').height(cell_height);
-    $('.board-cell').width(cell_width);
+    $('.board-cell, .blank-board-cell').height(cell_height);
+    $('.board-cell, .blank-board-cell').width(cell_width);
 
     // cell font-size:
     // TODO: image size when sizing in either direction
