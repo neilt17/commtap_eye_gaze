@@ -174,7 +174,8 @@ var App = {
     //wait for media element to be ready, then play
     var audioReady = audioElement.readyState;
 
-    if (audioReady > 2) {
+    if (true) {
+    //if (audioReady > 2) {
       audioElement.play();
     }
     else if (audioElement.error) { //For testing only!
