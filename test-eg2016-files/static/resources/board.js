@@ -51,7 +51,7 @@ var App = {
     cellBorderWidth: 8,
     cellMargin: 6,
     showAudioControls: 0,
-    accessMethod: "gaze" // "gaze", "click" ...
+    accessMethod: "click" // "gaze", "click" ...
   },
 
   dweller: {
