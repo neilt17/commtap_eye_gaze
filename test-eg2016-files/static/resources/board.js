@@ -45,7 +45,7 @@ var App = {
     cellsDown: 2,
     cellBorderWidth: 8,
     cellMargin: 6,
-    accessMethod: "click-and-gaze" // "gaze", "click", "click-and-gaze"
+    accessMethod: "click" // "gaze", "click", "click-and-gaze"
   },
 
   // click-and-gaze is to solve a problem that might not exist! Mobile browsers
