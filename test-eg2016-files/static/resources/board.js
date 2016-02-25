@@ -45,7 +45,7 @@ var App = {
     cellsDown: 2,
     cellBorderWidth: 8,
     cellMargin: 6,
-    accessMethod: "click" // "gaze", "click", "click-and-gaze"
+    accessMethod: "click-and-gaze" // "gaze", "click", "click-and-gaze"
   },
 
   // click-and-gaze is to solve a problem that might not exist! Mobile browsers
@@ -225,10 +225,7 @@ $(document).ready(function () {
   }
   else if (App.settings.accessMethod === 'click-and-gaze') {
     $(".board-cell").click(function () {
-      $(this).addClass('activated');
-      App.dwellTimerStart(this);
-    });
-    $(".board-cell").mouseenter(function () {
+      $('activated').removeClass('activated');
       $(this).addClass('activated');
       App.dwellTimerStart(this);
     });
