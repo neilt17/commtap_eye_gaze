@@ -176,8 +176,8 @@ var App = {
       audioElement.play();
     }
     else if (audioElement.error) { //For testing only!
-      var errorText = ['(no error)', 'User interrupted download', 'Network error caused interruption', 'Miscellaneous problem with media data', 'Cannot actually decode this media'];
-      alert("Something went wrong!\n" + errorText[audioElement.error.code]);
+      //var errorText = ['(no error)', 'User interrupted download', 'Network error caused interruption', 'Miscellaneous problem with media data', 'Cannot actually decode this media'];
+      //alert("Something went wrong!\n" + errorText[audioElement.error.code]);
     }
     else { //check for media ready again in half a second
       setTimeout(App.playWhenReady, 100, audioElement);

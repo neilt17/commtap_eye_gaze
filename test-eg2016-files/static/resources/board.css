@@ -1,5 +1,6 @@
 body {
-  background-color: #444444;
+  /*background-color: #444444;*/
+  background-color: black;
 }
 
 #board {
@@ -54,6 +55,24 @@ div.board-cell.activated {
   /* Have class on each cell for each type e.g. verb/noun etc. - js has a colour for each state - activated and non-activated - which it can apply as appropriate. We have to use rgba and not opacity for this whatever. Could alternatively set border to go dotted or dashed or... to go double like here - which might be the best/easiest option*/
   /*border: double 8px rgba(255, 0, 0, 0.5);*/
   border-style: double;
+}
+
+/* Word classes */
+
+.wc-verb {
+  border-color: red;
+}
+
+.wc-adjective {
+  border-color: green;
+}
+
+.wc-noun {
+  border-color: blue;
+}
+
+.wc-sentence {
+  border-color: yellow;
 }
 
 /*dwell timer*/

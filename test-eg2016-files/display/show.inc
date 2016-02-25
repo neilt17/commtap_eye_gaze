@@ -8,16 +8,16 @@
  * TODO: etran frame printing: print for front and back - page numbers on
  * back, goto cells - display goto page number on back
  * TODO: etran - sizing, e.g. offer A2, A3, A4 or custom
- * TODO: etran - size of boarder where pictures are positioned/size of pictures
+ * TODO: etran - size of border where pictures are positioned/size of pictures
  * (as settings)
  * TODO: allow message to repeated if stay dwelling in cell - e.g. delay after
- * it speaks - configure on/off
+ * it speaks - configure on/off - won't do.
  * TODO: for each board set, can invite others to view and edit it - to a
  * maximum - perhaps 0 if no subscription
  * TODO: in editing - allow cells to be swapped - you choose then swap them
  * TODO: enable uploading of own symbols probably easiest/best...
  * TODO: in js - something is not resizing when browser resizes;
- * 
+ *
  *
  *
  *
@@ -122,9 +122,16 @@ function show_board($set, $board) {
     if (is_numeric($row) && is_numeric($col)) {
       $rows = max($rows, $row);
       $cols = max($cols, $col);
+
+      $data = array();
+      if (file_exists($board_path . '/' . $cell . '/BLANK')) {
+        $data['blank'] = TRUE;
+      }
+      else {
+        $data['blank'] = FALSE;
+      }
       // get the files in the directory:
       $cell_files = scandir($board_path . '/' . $cell);
-      $data = array();
       foreach ($cell_files as $cell_file) {
         $pathinfo = pathinfo($cell_file);
         switch ($pathinfo['filename']) {
@@ -164,12 +171,16 @@ function show_board($set, $board) {
     cellsDown: $rows
   }";
 
-  // TODO: count up to rows and cols with i - if $board_cell is empty - display
-  // a blank cell.
   $content = '';
-  foreach ($board_data['cells'] as $row_index => $board_row) {
-    foreach ($board_row as $col_index => $board_cell) {
-      $content .= theme_cell($board_cell);
+
+  for ($i = 1; $i <= $rows; $i++) {
+    for ($j = 1; $j <= $cols; $j++) {
+      if (empty($board_data['cells'][$i][$j])) {
+        $content .= theme_cell(array('blank' => TRUE));
+      }
+      else {
+        $content .= theme_cell($board_data['cells'][$i][$j]);
+      }
     }
   }
 

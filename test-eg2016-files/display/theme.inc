@@ -21,5 +21,8 @@ function theme_list($list) {
 }
 
 function theme_cell($board_cell) {
+  if ($board_cell['blank']) {
+    return theme_render_template('blank-cell.tpl.php', $board_cell);
+  }
   return theme_render_template('cell.tpl.php', $board_cell);
 }
