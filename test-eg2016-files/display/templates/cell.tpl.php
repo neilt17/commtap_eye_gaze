@@ -1,4 +1,4 @@
-<div class="board-cell">
+<button class="board-cell">
   <div class="board-cell-content">
     <?php if (!empty($image)): ?>
     <img src="<?php print $image ?>"/>
@@ -13,4 +13,4 @@
       Your browser does not support this audio feature.
     </audio>
   </div>
-</div>
+</button>
