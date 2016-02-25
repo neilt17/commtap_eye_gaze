@@ -1,4 +1,5 @@
 <ul>
   <li><a href="/test-eg2016-files/display.php">Eye gaze AAC test page sets</a></li>
   <li><a href="/test-eg2016-files/static/communication_board.html">Initial test page</a></li>
+  <li><a href="/test-eg2016-files/test/audio-play.html">Audio initiation tests</a></li>
 </ul>

@@ -6,10 +6,6 @@
   <link href="start.css" rel="stylesheet">
 </head>
 <body>
-<ul>
-  <li><a href="/test-eg2016-files/static/communication_board.html">Eye gaze AAC test page</a></li>
-  <li><a href="/test-eg2016-files/info/explanation.php">Explanation</a></li>
-</ul>
-
+<p><a href="/test-eg2016-files/info/explanation.php">Explanations and links to pages</a></p>
 </body>
 </html>
