@@ -45,7 +45,7 @@ var App = {
     cellsDown: 2,
     cellBorderWidth: 8,
     cellMargin: 6,
-    accessMethod: "click-and-gaze" // "gaze", "click", "click-and-gaze"
+    accessMethod: "click" // "gaze", "click", "click-and-gaze"
   },
 
   // click-and-gaze is to solve a problem that might not exist! Mobile browsers
@@ -55,7 +55,7 @@ var App = {
   // connected to a tablet, then you could try the click-and-gaze setting - and
   // have the interaction settings for the eye gaze device set to mouse click
   // with minimum dwell time that you can possibly set. You can set a higher
-  // dwell time here.
+  // dwell time here. It doesn't work for mobile though anyway.
 
   dweller: {
     savedTime: 0
@@ -234,7 +234,6 @@ $(document).ready(function () {
       App.dwellTimerStop(this);
     });
   }
-
 });
 
 $(window).resize(function () {
