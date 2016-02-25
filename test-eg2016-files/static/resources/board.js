@@ -45,8 +45,17 @@ var App = {
     cellsDown: 2,
     cellBorderWidth: 8,
     cellMargin: 6,
-    accessMethod: "gaze" // "gaze", "click" ...
+    accessMethod: "click-and-gaze" // "gaze", "click", "click-and-gaze"
   },
+
+  // click-and-gaze is to solve a problem that might not exist! Mobile browsers
+  // are set up to respond to clicks - and not other "mouse" interactions -
+  // this lets timing start with a click and then continue as long as gaze is
+  // maintained in a cell - if "gaze" does not work on an eye gaze device
+  // connected to a tablet, then you could try the click-and-gaze setting - and
+  // have the interaction settings for the eye gaze device set to mouse click
+  // with minimum dwell time that you can possibly set. You can set a higher
+  // dwell time here.
 
   dweller: {
     savedTime: 0
@@ -134,23 +143,28 @@ var App = {
   },
 
   sizeBoardElements: function () {
-    var board_width = $(window).width();
-    var board_height = $(window).height();
+
+    // In case need this to stop cells stacking - fixing the cellheight/width as
+    // indicated below does the trick though.
+    var offsetX =  0;
+    var offsetY =  0;
+
+    var board_width = $(window).width() - offsetX;
+    var board_height = $(window).height() - offsetY;
+
     // this is the way to resize the canvas without it scaling its contents:
     var canvas = document.getElementById("dwell-timer-canvas");
     canvas.width = board_width;
     canvas.height = board_height;
 
-    var cell_height = (board_height / App.settings.cellsDown) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
-
-
-    var cell_width = (board_width / App.settings.cellsAcross) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - App.settings.cellMargin;
+    // Have 2 * App.settings.cellMargin - seem to need this extra to stop cells
+    // stacking on browser resize.
+    var cell_height = (board_height / App.settings.cellsDown) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - 2 * App.settings.cellMargin;
+    var cell_width = (board_width / App.settings.cellsAcross) - (2 * (App.settings.cellBorderWidth + App.settings.cellMargin)) - 2 * App.settings.cellMargin;
 
     $('.board-cell, .blank-board-cell').height(cell_height);
     $('.board-cell, .blank-board-cell').width(cell_width);
 
-    // cell font-size:
-    // TODO: image size when sizing in either direction
     var display_text_div_height = $('div.board-cell-content .display-text').height();
     $('div.board-cell-content .display-text').css('font-size', cell_height / 8);
 
@@ -167,7 +181,7 @@ var App = {
       //var errorText = ['(no error)', 'User interrupted download', 'Network error caused interruption', 'Miscellaneous problem with media data', 'Cannot actually decode this media'];
       //alert("Something went wrong!\n" + errorText[audioElement.error.code]);
     }
-    else { //check for media ready again in half a second
+    else { //check for media ready again in 100mS:
       setTimeout(App.playWhenReady, 100, audioElement);
     }
   }
@@ -193,7 +207,7 @@ $(document).ready(function () {
     $(".board-cell").mouseenter(function () {
       $(this).addClass('activated');
       App.dwellTimerStart(this);
-    }).click();
+    });
 
     $(".board-cell").mouseleave(function () {
       $(this).removeClass('activated');
@@ -207,6 +221,20 @@ $(document).ready(function () {
     });
     $('audio').on('ended', function() {
       $('.board-cell').removeClass('activated');
+    });
+  }
+  else if (App.settings.accessMethod === 'click-and-gaze') {
+    $(".board-cell").click(function () {
+      $(this).addClass('activated');
+      App.dwellTimerStart(this);
+    });
+    $(".board-cell").mouseenter(function () {
+      $(this).addClass('activated');
+      App.dwellTimerStart(this);
+    });
+    $(".board-cell").mouseleave(function () {
+      $(this).removeClass('activated');
+      App.dwellTimerStop(this);
     });
   }
 

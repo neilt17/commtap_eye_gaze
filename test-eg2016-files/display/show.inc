@@ -182,6 +182,7 @@ function show_board($set, $board) {
         $content .= theme_cell($board_data['cells'][$i][$j]);
       }
     }
+    $content .= '<div class="clear"></div>';
   }
 
   $variables['content'] = $content;
