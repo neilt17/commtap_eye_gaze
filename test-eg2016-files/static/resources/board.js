@@ -28,12 +28,7 @@
  * this to play on iPad, tablets...
  *
  *
- * Audio formats fine for tablets, but, generally they seem to need to have the
- * controls, and, will only first play if a control is used to play the audio.
- * So you have to display a control AND you have to press the control button.
- * Maybe flash might do what we want, maybe downloaded to the device will do it
- * ....
- * Maybe a click event would ripple through and be ok???
+ * Click on button works for mobile browsers
  *
  * TODO: semantic colours - check colourful semantics
  *
@@ -50,8 +45,7 @@ var App = {
     cellsDown: 2,
     cellBorderWidth: 8,
     cellMargin: 6,
-    showAudioControls: 0,
-    accessMethod: "click" // "gaze", "click" ...
+    accessMethod: "gaze" // "gaze", "click" ...
   },
 
   dweller: {
@@ -104,19 +98,13 @@ var App = {
   activatedCellAction: function (context) {
     var audio = $('audio', context).get(0);
     if (audio !== undefined) {
-      $('audio', context).attr('autoplay', 'autoplay');
-      if (App.settings.showAudioControls === 1) {
-        $('audio', context).attr('controls', 'controls');
-      }
       audio.load();
       App.playWhenReady(audio);
-      //$('audio', context).removeAttr('controls');
     }
 
-    $('audio', context).on('ended', function() {
-      $('audio').removeAttr('controls', context);
-    });
 
+    // Need to play sound *before* jumping to page (audio can't load
+    // automatically on a new page in mobile browsers.
     if ($(context).attr('data-jump-to-page') !== undefined) {
       window.location.href = $(context).attr('data-jump-to-page');
     }
@@ -205,7 +193,7 @@ $(document).ready(function () {
     $(".board-cell").mouseenter(function () {
       $(this).addClass('activated');
       App.dwellTimerStart(this);
-    });
+    }).click();
 
     $(".board-cell").mouseleave(function () {
       $(this).removeClass('activated');
