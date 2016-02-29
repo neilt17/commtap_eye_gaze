@@ -27,6 +27,8 @@
  * Check: view-source:http://hpr.dogphilosophy.net/test/ to see if we can get
  * this to play on iPad, tablets...
  *
+ * For click - tablets - works best on android and FireFox, not so good on iOS.
+ *
  *
  * Click on button works for mobile browsers
  *
@@ -45,7 +47,7 @@ var App = {
     cellsDown: 2,
     cellBorderWidth: 8,
     cellMargin: 6,
-    accessMethod: "click" // "gaze", "click", "click-and-gaze"
+    accessMethod: "gaze" // "gaze", "click", "click-and-gaze"
   },
 
   // click-and-gaze is to solve a problem that might not exist! Mobile browsers
@@ -174,8 +176,7 @@ var App = {
     //wait for media element to be ready, then play
     var audioReady = audioElement.readyState;
 
-    if (true) {
-    //if (audioReady > 2) {
+    if (audioReady > 2) {
       audioElement.play();
     }
     else if (audioElement.error) { //For testing only!
@@ -186,8 +187,6 @@ var App = {
       setTimeout(App.playWhenReady, 100, audioElement);
     }
   }
-
-
 };
 
 App.timerId = null;
