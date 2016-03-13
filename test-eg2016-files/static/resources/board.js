@@ -40,6 +40,7 @@ var App = {
 
   settings: {
     dwellTimeSeconds: 1,
+    dwellReactivateSeconds: 2, // Delay time, before moving within cell will cause re-activation
     dwellTimerRadius: 40,
     dwellTimerColor: '#ff0000',
     dwellTimerOpacity: 0.01,
@@ -60,7 +61,8 @@ var App = {
   // dwell time here. It doesn't work for mobile though anyway.
 
   dweller: {
-    savedTime: 0
+    savedTime: 0,
+    lastPlayedTime: 0 // The last time a cell was played.
   },
 
   // not implemented yet:
@@ -107,15 +109,23 @@ var App = {
   },
 
   activatedCellAction: function (context) {
+
+    // Ensure no re-activation before/whilst audio is playing:
+    App.dweller.lastPlayedTime = new Date().getTime() + 100000;
+
     var audio = $('audio', context).get(0);
     if (audio !== undefined) {
       audio.load();
       App.playWhenReady(audio);
     }
 
+    $('audio').on('ended', function() {
+      App.dweller.lastPlayedTime = new Date().getTime();
+      // $(this).parents().removeClass('activated');
+    });
 
     // Need to play sound *before* jumping to page (audio can't load
-    // automatically on a new page in mobile browsers.
+    // automatically on a new page in mobile browsers).
     if ($(context).attr('data-jump-to-page') !== undefined) {
       window.location.href = $(context).attr('data-jump-to-page');
     }
@@ -207,6 +217,14 @@ $(document).ready(function () {
     $(".board-cell").mouseenter(function () {
       $(this).addClass('activated');
       App.dwellTimerStart(this);
+    });
+
+    $(".board-cell").mousemove(function () {
+      var currentTime = new Date().getTime();
+      if (currentTime > App.dweller.lastPlayedTime + (App.settings.dwellReactivateSeconds * 1000)) {
+        $(this).addClass('activated');
+        App.dwellTimerStart(this);
+      }
     });
 
     $(".board-cell").mouseleave(function () {
