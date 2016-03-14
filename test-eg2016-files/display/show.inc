@@ -31,7 +31,8 @@ function show_page() {
   }
   else {
     if (empty($_GET['board'])) {
-      $content = show_page_list($_GET['set']);
+      $content = '<p>' . l('List of page sets', 'display.php') . '</p>';
+      $content .= show_page_list($_GET['set']);
     }
     else {
       $content = show_board($_GET['set'], $_GET['board']);
@@ -71,27 +72,58 @@ function show_page_list($set) {
 
   $boards = array_diff(scandir($set_path), array('..', '.', 'settings.txt'));
 
-  $links = array();
+  $rows = array();
   foreach ($boards as $board) {
-
     $cell_counts = aac_cell_count($set, $board);
-
-    $link_text = $board . ' (' . $cell_counts['rows'] . 'x' . $cell_counts['cols'] . ')';
-
-    $links[] = l($link_text, 'display.php', array(
+    $row = array();
+    $row[] = l($board, 'display.php', array(
       'query' => array(
         'set' => $set,
         'board' => $board
       )
     ));
-
+    $row[] = $cell_counts['rows'] . ' x ' . $cell_counts['cols'];
+    $rows[] = $row;
   }
 
+  $header = array('Page name', 'Rows x columns');
+
   $variables = array();
-  $variables['content'] = theme_list($links);
-  $variables['title'] = 'Boards list in ' . check_plain($set);
+  $variables['content'] = '<h2>Boards list in ' . check_plain($set) . '</h2>' . theme_table($header, $rows);
+
+
+  $variables['content'] .= '<h2>Settings</h2>' . aac_settings_form($set);
+
+
+  $variables['content'] .= '<script src="static/resources/jquery-1.12.0.js"></script>';
+  $variables['content'] .= '<script src="display/settings.js"></script>';
+
+
+
+  $variables['title'] = check_plain($set);
 
   return theme_render_template('navigation-page.tpl.php', $variables);
+}
+
+function aac_settings_form($set) {
+
+  $html_form = '<form id="localStorageTest" method="post" action="">
+    <label>Dwell time (seconds):</label>
+    <div><input type="number" name="dwellTimeSeconds" id="dwellTimeSeconds" class="stored" value="" /></div>
+
+    <label>Re-activation delay (seconds):</label>
+    <div><input type="number" name="dwellReactivateSeconds" id="dwellReactivateSeconds" class="stored" value="" /></div>
+
+    <label>Access method:</label>
+    <div><input type="radio" name="accessMethod" class="stored" value="gaze" />Gaze</div>
+    <div><input type="radio" name="accessMethod" class="stored" value="click" />Click</div>
+    <div><input type="radio" name="accessMethod" class="stored" value="click-and-gaze" />Click and gaze</div>
+
+    <input type="submit" class="demo-button" value="Clear settings" />
+</form>';
+  return $html_form;
+
+
 }
 
 function show_board($set, $board) {
@@ -159,14 +191,7 @@ function show_board($set, $board) {
     return 'Nothing to display.';
   }
 
-  $dwell_time = '';
-  if (!empty($_GET['dwell']) && is_numeric($_GET['dwell'])) {
-    $dwell = $_GET['dwell'];
-    $dwell_time = "dwellTimeSeconds: $dwell,";
-  }
-
   $json = "{
-    $dwell_time
     cellsAcross: $cols,
     cellsDown: $rows
   }";

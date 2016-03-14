@@ -26,3 +26,23 @@ function theme_cell($board_cell) {
   }
   return theme_render_template('cell.tpl.php', $board_cell);
 }
+
+function theme_table($header = array(), $rows) {
+  $html = '<table>';
+  if (!empty($header)) {
+    $html .= '<thead><tr>';
+    foreach ($header as $item) {
+      $html .= "<th>$item</th>";
+    }
+    $html .= '</thead></tr>';
+  }
+  foreach ($rows as $row) {
+    $html .= "<tr>";
+    foreach ($row as $item) {
+      $html .= "<td>$item</td>";
+    }
+    $html .= "</tr>";
+  }
+  $html .= '</table>';
+  return $html;
+}

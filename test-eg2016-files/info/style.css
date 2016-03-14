@@ -20,3 +20,14 @@ div.clear {
   clear: both;
 }
 
+table {
+}
+
+table td {
+  padding-right: 6px;
+}
+
+th {
+  border-bottom: 1px solid grey;
+}
+

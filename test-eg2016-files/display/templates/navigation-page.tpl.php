@@ -5,6 +5,7 @@
   <title>
     <?php print $title ?>
   </title>
+  <link href="info/style.css" rel="stylesheet">
 </head>
 <body>
 <h1><?php print $title ?></h1>
