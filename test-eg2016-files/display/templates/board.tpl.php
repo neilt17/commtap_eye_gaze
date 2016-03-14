@@ -14,6 +14,7 @@
 </div>
 <canvas id="dwell-timer-canvas" width="2000" height="1000"></canvas>
 <script src="static/resources/jquery-1.12.0.js"></script>
+<script src="static/resources/default_settings.js"></script>
 <script src="static/resources/board.js"></script>
 <script type="text/javascript">
   <!--//--><![CDATA[//><!--

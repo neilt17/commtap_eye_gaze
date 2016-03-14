@@ -88,17 +88,23 @@ function show_page_list($set) {
 
   $header = array('Page name', 'Rows x columns');
 
+  $set_name_safe = check_plain($set);
+
   $variables = array();
-  $variables['content'] = '<h2>Boards list in ' . check_plain($set) . '</h2>' . theme_table($header, $rows);
+  $variables['content'] = '<h2>Boards list in ' . $set_name_safe . '</h2>';
+  $variables['content'] = '<div><a href="#set-settings">Jump to settings</a></div><p>&nbsp;</p>';
+  $variables['content'] .= theme_table($header, $rows);
 
-
-  $variables['content'] .= '<h2>Settings</h2>' . aac_settings_form($set);
-
+  $variables['content'] .= "<h2 id='set-settings'>Settings for $set_name_safe</h2>";
+  $variables['content'] .= '<em>Note, settings are automatically saved when you enter them.</em>';
+  $variables['content'] .= aac_settings_form($set);
 
   $variables['content'] .= '<script src="static/resources/jquery-1.12.0.js"></script>';
+  $variables['content'] .= '<script src="static/resources/default_settings.js"></script>';
+  $variables['content'] .= '<script type="text/javascript"><!--//--><![CDATA[//><!--';
+  $variables['content'] .= "\njQuery.extend(App_settings.default_settings, {set: '$set'});";
+  $variables['content'] .= "\n//--><!]]></script>";
   $variables['content'] .= '<script src="display/settings.js"></script>';
-
-
 
   $variables['title'] = check_plain($set);
 
@@ -107,19 +113,22 @@ function show_page_list($set) {
 
 function aac_settings_form($set) {
 
-  $html_form = '<form id="localStorageTest" method="post" action="">
+  $html_form = '<form id="localStorageSettings" method="post" action="">
+<div class="form-element">
     <label>Dwell time (seconds):</label>
-    <div><input type="number" name="dwellTimeSeconds" id="dwellTimeSeconds" class="stored" value="" /></div>
-
+    <div><input type="number" name="dwellTimeSeconds" min="0" id="dwellTimeSeconds" class="stored" value="" /></div>
+</div>
+<div class="form-element">
     <label>Re-activation delay (seconds):</label>
-    <div><input type="number" name="dwellReactivateSeconds" id="dwellReactivateSeconds" class="stored" value="" /></div>
-
+    <div><input type="number" name="dwellReactivateSeconds" min="0" id="dwellReactivateSeconds" class="stored" value="" /></div>
+</div>
+<div class="form-element">
     <label>Access method:</label>
     <div><input type="radio" name="accessMethod" class="stored" value="gaze" />Gaze</div>
     <div><input type="radio" name="accessMethod" class="stored" value="click" />Click</div>
     <div><input type="radio" name="accessMethod" class="stored" value="click-and-gaze" />Click and gaze</div>
-
-    <input type="submit" class="demo-button" value="Clear settings" />
+</div>
+    <input type="submit" class="reset-button" value="Reset to defaults" />
 </form>';
   return $html_form;
 
@@ -193,7 +202,8 @@ function show_board($set, $board) {
 
   $json = "{
     cellsAcross: $cols,
-    cellsDown: $rows
+    cellsDown: $rows,
+    set: '$set'
   }";
 
   $content = '';

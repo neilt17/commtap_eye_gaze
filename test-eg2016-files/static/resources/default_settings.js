@@ -5,7 +5,8 @@
 // TODO: load this separately, use this to reset settings.
 // load this for the settings page and board...
 // need to have separate settings for each page set
-App.settings = {
+var App_settings = {
+  default_settings: {
     dwellTimeSeconds: 1,
     dwellReactivateSeconds: 2, // Delay time, before moving within cell will cause re-activation
     dwellTimerRadius: 40,
@@ -16,4 +17,5 @@ App.settings = {
     cellBorderWidth: 8,
     cellMargin: 6,
     accessMethod: "gaze" // "gaze", "click", "click-and-gaze"
-  };
+  }
+};

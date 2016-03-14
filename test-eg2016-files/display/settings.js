@@ -3,23 +3,36 @@
  */
 $(document).ready(function () {
   function init() {
-    if (localStorage["dwellTimeSeconds"]) {
-      $('#dwellTimeSeconds').val(localStorage["dwellTimeSeconds"]);
+    if (localStorage[App_settings.default_settings.set + ":" + "dwellTimeSeconds"]) {
+      $('#dwellTimeSeconds').val(localStorage[App_settings.default_settings.set + ':' + "dwellTimeSeconds"]);
     }
-    if (localStorage["dwellReactivateSeconds"]) {
-      $('#dwellReactivateSeconds').val(localStorage["dwellReactivateSeconds"]);
+    if (localStorage[App_settings.default_settings.set + ":" + "dwellReactivateSeconds"]) {
+      $('#dwellReactivateSeconds').val(localStorage[App_settings.default_settings.set + ":" + "dwellReactivateSeconds"]);
     }
-    if (localStorage["accessMethod"]) {
-      $('input:radio[name="accessMethod"][value="' + localStorage["accessMethod"] + '"]').prop('checked', true);
+    if (localStorage[App_settings.default_settings.set + ":" + "accessMethod"]) {
+      $('input:radio[name="accessMethod"][value="' + localStorage[App_settings.default_settings.set + ":" + "accessMethod"] + '"]').prop('checked', true);
     }
   }
   init();
 });
 
 $('.stored').change(function () {
-  localStorage[$(this).attr('name')] = $(this).val();
+  localStorage[App_settings.default_settings.set + ":" + $(this).attr('name')] = $(this).val();
 });
 
-$('#localStorageTest').submit(function() {
-  localStorage.clear();
+$('.stored').keyup(function () {
+  localStorage[App_settings.default_settings.set + ":" + $(this).attr('name')] = $(this).val();
+});
+
+$('#localStorageSettings').submit(function() {
+
+  $('#dwellTimeSeconds').val(App_settings.default_settings.dwellTimeSeconds);
+  localStorage[App_settings.default_settings.set + ':' + 'dwellTimeSeconds'] = App_settings.default_settings.dwellTimeSeconds;
+
+  $('#dwellReactivateSeconds').val(App_settings.default_settings.dwellReactivateSeconds);
+  localStorage[App_settings.default_settings.set + ":" + 'dwellReactivateSeconds'] = App_settings.default_settings.dwellReactivateSeconds;
+
+  $('input:radio[name="accessMethod"][value="' + App_settings.default_settings.accessMethod + '"]').prop('checked', true);
+  localStorage[App_settings.default_settings.set + ":" + 'accessMethod'] = App_settings.default_settings.accessMethod;
+
 });

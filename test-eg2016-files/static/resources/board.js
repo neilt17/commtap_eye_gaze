@@ -199,10 +199,25 @@ var App = {
   }
 };
 
-App.timerId = null;
-App.angle = 0;
+
 
 $(document).ready(function () {
+
+  // Update with locally stored settings:
+
+  if (localStorage[App.settings.set + ':' + 'dwellTimeSeconds'] !== undefined) {
+    App.settings.dwellTimeSeconds = localStorage[App.settings.set + ':' + 'dwellTimeSeconds'];
+  }
+  if (localStorage[App.settings.set + ':' + 'dwellReactivateSeconds'] !== undefined) {
+    App.settings.dwellReactivateSeconds = localStorage[App.settings.set + ':' + 'dwellReactivateSeconds'];
+  }
+  if (localStorage[App.settings.set + ':' + 'accessMethod'] !== undefined) {
+    App.settings.accessMethod = localStorage[App.settings.set + ':' + 'accessMethod'];
+  }
+
+
+  App.timerId = null;
+  App.angle = 0;
 
   var title_audio = $('audio.title-audio').get(0);
   if (title_audio !== undefined) {
