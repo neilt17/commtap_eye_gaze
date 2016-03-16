@@ -34,8 +34,18 @@ function show_page() {
       $content = '<p>' . l('List of page sets', 'display.php') . '</p>';
       $content .= show_page_list($_GET['set']);
     }
-    else {
+    elseif (empty($_GET['print'])) {
       $content = show_board($_GET['set'], $_GET['board']);
+    }
+    elseif ($_GET['print'] == 'etran') {
+      $content = aac_print_etran_board($_GET['set'], $_GET['board']);
+      // set up board - like for show_board, but inserting cells within a
+      // grid of 9 - for two to eight cells with no more than 3 cells on a side
+      // might need alternate left or right top or bottom for single row or
+      // single column setups.
+      // needs to be two pages - perhaps separate links for each page? - That
+      // might be more reliable. (Front/back). Have cut lines.
+      //
     }
   }
   return $content;
@@ -226,6 +236,162 @@ function show_board($set, $board) {
 
 
 }
+
+function aac_print_etran_board($set, $board) {
+
+  // Get rows and columns
+  // Directory must be of the form 1,1-
+
+  // it's always 3 x 3;
+  // 1x1 makes no sense - so won't offer that
+  // max 3 rows or 3 cols
+  //
+
+  global $global_settings;
+
+  $board_local_path = 'static/boards/' . $set . '/' . $board;
+  $board_path = $global_settings['root_path'] . $global_settings['start_path'] . '/' . $board_local_path;
+
+  if (!is_dir($board_path)) {
+    return 'PAGE NOT FOUND';
+  }
+
+  $cells = array_diff(scandir($board_path), array('..', '.'));
+
+  $rows = 0;
+  $cols = 0;
+
+  $board_data = array();
+
+  foreach ($cells as $cell) {
+    $parts = explode('-', $cell);
+    $row_col = explode(',', $parts[0]);
+    $row = $row_col[0];
+    $col = $row_col[1];
+    if (is_numeric($row) && is_numeric($col)) {
+      $rows = max($rows, $row);
+      $cols = max($cols, $col);
+
+      $data = array();
+      if (file_exists($board_path . '/' . $cell . '/BLANK')) {
+        $data['blank'] = TRUE;
+      }
+      else {
+        $data['blank'] = FALSE;
+      }
+      // get the files in the directory:
+      $cell_files = scandir($board_path . '/' . $cell);
+      foreach ($cell_files as $cell_file) {
+        $pathinfo = pathinfo($cell_file);
+        switch ($pathinfo['filename']) {
+          case 'display':
+            if (file_exists($board_path . '/' . $cell . '/' . $cell_file)) {
+              $data['display'] = check_plain(file_get_contents($board_path . '/' . $cell . '/' . $cell_file));
+            }
+            else {
+              $data['display'] = '';
+            }
+            break;
+          case 'image':
+            $data['image'] = url($board_local_path . '/' . $cell . '/' . $cell_file);
+        }
+      }
+      $board_data['cells'][$row][$col] = $data;
+    }
+  }
+
+  if (empty($board_data)) {
+    return 'Nothing to display.';
+  }
+
+  if ($rows > 3 || $cols > 3) {
+    return 'Sorry, cannot create an etran board for more than 3 columns or rows';
+  }
+
+  $content = '';
+
+  // We *will* count blanks as a cell for the purposes of layout.
+
+  // lines of 3 can be top or bottom, cols of 3 can be left or right.
+
+  // mapping cells:
+  $number_of_cells = $rows * $cols;
+
+  if ($number_of_cells == 1) {
+    return "Sorry, cannot create an etran board for just one cell - just go to the board and use your browser's normal print.";
+  }
+
+  $etran_board_data = array();
+  // we''ll map the board_data into the etran_board_data
+
+
+  switch ($number_of_cells) {
+
+    case 2:
+      // can be top-bottom or left-right:
+      if ($rows == 2) {
+        $etran_board_data['cells'][1][2] = $board_data['cells'][1][1];
+        $etran_board_data['cells'][3][2] = $board_data['cells'][2][1];
+      }
+      else {
+        $etran_board_data['cells'][2][1] = $board_data['cells'][1][1];
+        $etran_board_data['cells'][2][3] = $board_data['cells'][1][2];
+      }
+
+    case 3:
+      // can be top-bottom or left-right:
+      // options to display across the top/bottom or left or right
+      if ($rows == 3) {
+        if ($_GET['position'] = 'left') {
+          $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+          $etran_board_data['cells'][2][1] = $board_data['cells'][2][1];
+          $etran_board_data['cells'][3][1] = $board_data['cells'][3][1];
+        }
+        else {
+          $etran_board_data['cells'][1][3] = $board_data['cells'][1][1];
+          $etran_board_data['cells'][2][3] = $board_data['cells'][2][1];
+          $etran_board_data['cells'][3][3] = $board_data['cells'][3][1];
+        }
+      }
+      else {
+        if ($_GET['position'] = 'top') {
+          $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+          $etran_board_data['cells'][2][1] = $board_data['cells'][1][2];
+          $etran_board_data['cells'][3][1] = $board_data['cells'][1][3];
+        }
+        else {
+          $etran_board_data['cells'][1][3] = $board_data['cells'][1][1];
+          $etran_board_data['cells'][2][3] = $board_data['cells'][1][2];
+          $etran_board_data['cells'][3][3] = $board_data['cells'][1][3];
+        }
+      }
+
+      break;
+
+
+  }
+
+
+  for ($i = 1; $i <= 3; $i++) {
+    for ($j = 1; $j <= 3; $j++) {
+      if (empty($etran_board_data['cells'][$i][$j])) {
+        $content .= theme_cell(array('blank' => TRUE));
+      }
+      else {
+        $content .= theme_cell($etran_board_data['cells'][$i][$j]);
+      }
+    }
+    $content .= '<div class="clear"></div>';
+  }
+
+  $variables['content'] = $content;
+  return theme_render_template('print-board.tpl.php', $variables);
+
+
+}
+
+
+
 
 function aac_cell_count($set, $board) {
 
