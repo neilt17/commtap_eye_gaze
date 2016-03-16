@@ -93,10 +93,18 @@ function show_page_list($set) {
       )
     ));
     $row[] = $cell_counts['rows'] . ' x ' . $cell_counts['cols'];
+    $row[] = l('E-tran', 'display.php', array(
+      'query' => array(
+        'set' => $set,
+        'board' => $board,
+        'print' => 'etran',
+      )
+    ));
+
     $rows[] = $row;
   }
 
-  $header = array('Page name', 'Rows x columns');
+  $header = array('Page name', 'Rows x columns', '');
 
   $set_name_safe = check_plain($set);
 
@@ -105,7 +113,7 @@ function show_page_list($set) {
   $variables['content'] = '<div><a href="#set-settings">Jump to settings</a></div><p>&nbsp;</p>';
   $variables['content'] .= theme_table($header, $rows);
 
-  $variables['content'] .= "<h2 id='set-settings'>Settings for $set_name_safe</h2>";
+  $variables['content'] .= "<h2 id='set-settings'>Settings for <em>$set_name_safe</em></h2>";
   $variables['content'] .= '<em>Note, settings are automatically saved when you enter them.</em>';
   $variables['content'] .= aac_settings_form($set);
 
@@ -168,41 +176,43 @@ function show_board($set, $board) {
   foreach ($cells as $cell) {
     $parts = explode('-', $cell);
     $row_col = explode(',', $parts[0]);
-    $row = $row_col[0];
-    $col = $row_col[1];
-    if (is_numeric($row) && is_numeric($col)) {
-      $rows = max($rows, $row);
-      $cols = max($cols, $col);
+    if (count($row_col) > 1) {
+      $row = $row_col[0];
+      $col = $row_col[1];
+      if (is_numeric($row) && is_numeric($col)) {
+        $rows = max($rows, $row);
+        $cols = max($cols, $col);
 
-      $data = array();
-      if (file_exists($board_path . '/' . $cell . '/BLANK')) {
-        $data['blank'] = TRUE;
-      }
-      else {
-        $data['blank'] = FALSE;
-      }
-      // get the files in the directory:
-      $cell_files = scandir($board_path . '/' . $cell);
-      foreach ($cell_files as $cell_file) {
-        $pathinfo = pathinfo($cell_file);
-        switch ($pathinfo['filename']) {
-          case 'audio':
-          case 'sound':
-            $data['audio'][] = url($board_local_path . '/' . $cell . '/' . $cell_file);
-            break;
-          case 'display':
-            if (file_exists($board_path . '/' . $cell . '/' . $cell_file)) {
-              $data['display'] = check_plain(file_get_contents($board_path . '/' . $cell . '/' . $cell_file));
-            }
-            else {
-              $data['display'] = '';
-            }
-            break;
-          case 'image':
-            $data['image'] = url($board_local_path . '/' . $cell . '/' . $cell_file);
+        $data = array();
+        if (file_exists($board_path . '/' . $cell . '/BLANK')) {
+          $data['blank'] = TRUE;
         }
+        else {
+          $data['blank'] = FALSE;
+        }
+        // get the files in the directory:
+        $cell_files = scandir($board_path . '/' . $cell);
+        foreach ($cell_files as $cell_file) {
+          $pathinfo = pathinfo($cell_file);
+          switch ($pathinfo['filename']) {
+            case 'audio':
+            case 'sound':
+              $data['audio'][] = url($board_local_path . '/' . $cell . '/' . $cell_file);
+              break;
+            case 'display':
+              if (file_exists($board_path . '/' . $cell . '/' . $cell_file)) {
+                $data['display'] = check_plain(file_get_contents($board_path . '/' . $cell . '/' . $cell_file));
+              }
+              else {
+                $data['display'] = '';
+              }
+              break;
+            case 'image':
+              $data['image'] = url($board_local_path . '/' . $cell . '/' . $cell_file);
+          }
+        }
+        $board_data['cells'][$row][$col] = $data;
       }
-      $board_data['cells'][$row][$col] = $data;
     }
   }
 
@@ -266,37 +276,50 @@ function aac_print_etran_board($set, $board) {
   foreach ($cells as $cell) {
     $parts = explode('-', $cell);
     $row_col = explode(',', $parts[0]);
-    $row = $row_col[0];
-    $col = $row_col[1];
-    if (is_numeric($row) && is_numeric($col)) {
-      $rows = max($rows, $row);
-      $cols = max($cols, $col);
 
-      $data = array();
-      if (file_exists($board_path . '/' . $cell . '/BLANK')) {
-        $data['blank'] = TRUE;
-      }
-      else {
-        $data['blank'] = FALSE;
-      }
-      // get the files in the directory:
-      $cell_files = scandir($board_path . '/' . $cell);
-      foreach ($cell_files as $cell_file) {
-        $pathinfo = pathinfo($cell_file);
-        switch ($pathinfo['filename']) {
-          case 'display':
-            if (file_exists($board_path . '/' . $cell . '/' . $cell_file)) {
-              $data['display'] = check_plain(file_get_contents($board_path . '/' . $cell . '/' . $cell_file));
-            }
-            else {
-              $data['display'] = '';
-            }
-            break;
-          case 'image':
-            $data['image'] = url($board_local_path . '/' . $cell . '/' . $cell_file);
+    if (count($row_col) > 1) {
+
+      $row = $row_col[0];
+      $col = $row_col[1];
+      if (is_numeric($row) && is_numeric($col)) {
+        $rows = max($rows, $row);
+        $cols = max($cols, $col);
+
+        $data = array();
+        if (file_exists($board_path . '/' . $cell . '/BLANK')) {
+          $data['blank'] = TRUE;
         }
+        else {
+          $data['blank'] = FALSE;
+        }
+        // get the files in the directory:
+        $cell_files = scandir($board_path . '/' . $cell);
+        foreach ($cell_files as $cell_file) {
+          $pathinfo = pathinfo($cell_file);
+          switch ($pathinfo['filename']) {
+            case 'display':
+              if (file_exists($board_path . '/' . $cell . '/' . $cell_file)) {
+                $data['display'] = check_plain(file_get_contents($board_path . '/' . $cell . '/' . $cell_file));
+              }
+              else {
+                $data['display'] = '';
+              }
+              break;
+            case 'image':
+              $data['image'] = url($board_local_path . '/' . $cell . '/' . $cell_file);
+          }
+        }
+        $board_data['cells'][$row][$col] = $data;
       }
-      $board_data['cells'][$row][$col] = $data;
+    }
+  }
+
+
+  for ($i=1; $i <= 3; $i++) {
+    for ($j=1; $j <= 3; $j++) {
+      if (empty($board_data['cells'][$i][$j])) {
+        $board_data['cells'][$i][$j]['blank'] = TRUE;
+      }
     }
   }
 
@@ -321,54 +344,79 @@ function aac_print_etran_board($set, $board) {
     return "Sorry, cannot create an etran board for just one cell - just go to the board and use your browser's normal print.";
   }
 
+  $board_dimensions = $rows . 'x' . $cols;
+
   $etran_board_data = array();
   // we''ll map the board_data into the etran_board_data
 
+  $position = !empty($_GET['position']) ? $_GET['position'] : FALSE;
 
-  switch ($number_of_cells) {
 
-    case 2:
-      // can be top-bottom or left-right:
-      if ($rows == 2) {
-        $etran_board_data['cells'][1][2] = $board_data['cells'][1][1];
-        $etran_board_data['cells'][3][2] = $board_data['cells'][2][1];
-      }
-      else {
-        $etran_board_data['cells'][2][1] = $board_data['cells'][1][1];
-        $etran_board_data['cells'][2][3] = $board_data['cells'][1][2];
-      }
-
-    case 3:
-      // can be top-bottom or left-right:
-      // options to display across the top/bottom or left or right
-      if ($rows == 3) {
-        if ($_GET['position'] = 'left') {
-          $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
-          $etran_board_data['cells'][2][1] = $board_data['cells'][2][1];
-          $etran_board_data['cells'][3][1] = $board_data['cells'][3][1];
-        }
-        else {
-          $etran_board_data['cells'][1][3] = $board_data['cells'][1][1];
-          $etran_board_data['cells'][2][3] = $board_data['cells'][2][1];
-          $etran_board_data['cells'][3][3] = $board_data['cells'][3][1];
-        }
-      }
-      else {
-        if ($_GET['position'] = 'top') {
-          $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
-          $etran_board_data['cells'][2][1] = $board_data['cells'][1][2];
-          $etran_board_data['cells'][3][1] = $board_data['cells'][1][3];
-        }
-        else {
-          $etran_board_data['cells'][1][3] = $board_data['cells'][1][1];
-          $etran_board_data['cells'][2][3] = $board_data['cells'][1][2];
-          $etran_board_data['cells'][3][3] = $board_data['cells'][1][3];
-        }
-      }
-
+  switch ($board_dimensions) {
+    case '1x2':
+      $etran_board_data['cells'][2][1] = $board_data['cells'][1][1];
+      $etran_board_data['cells'][2][3] = $board_data['cells'][1][2];
       break;
-
-
+    case '1x3':
+      if ($position == 'top') {
+        $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+        $etran_board_data['cells'][1][2] = $board_data['cells'][1][2];
+        $etran_board_data['cells'][1][3] = $board_data['cells'][1][3];
+      }
+      else {
+        $etran_board_data['cells'][3][1] = $board_data['cells'][1][1];
+        $etran_board_data['cells'][3][2] = $board_data['cells'][1][2];
+        $etran_board_data['cells'][3][3] = $board_data['cells'][1][3];
+      }
+      break;
+    case '2x1':
+      $etran_board_data['cells'][1][2] = $board_data['cells'][1][1];
+      $etran_board_data['cells'][3][2] = $board_data['cells'][2][1];
+      break;
+    case '2x2':
+      $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+      $etran_board_data['cells'][1][3] = $board_data['cells'][1][2];
+      $etran_board_data['cells'][3][1] = $board_data['cells'][2][1];
+      $etran_board_data['cells'][3][3] = $board_data['cells'][2][2];
+      break;
+    case '2x3':
+      $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+      $etran_board_data['cells'][1][2] = $board_data['cells'][1][2];
+      $etran_board_data['cells'][1][3] = $board_data['cells'][1][3];
+      $etran_board_data['cells'][3][1] = $board_data['cells'][2][1];
+      $etran_board_data['cells'][3][2] = $board_data['cells'][2][2];
+      $etran_board_data['cells'][3][3] = $board_data['cells'][2][3];
+      break;
+    case '3x1':
+      if ($position == 'left') {
+        $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+        $etran_board_data['cells'][2][1] = $board_data['cells'][2][1];
+        $etran_board_data['cells'][3][1] = $board_data['cells'][3][1];
+      }
+      else {
+        $etran_board_data['cells'][1][3] = $board_data['cells'][1][1];
+        $etran_board_data['cells'][2][3] = $board_data['cells'][2][1];
+        $etran_board_data['cells'][3][3] = $board_data['cells'][3][1];
+      }
+      break;
+    case '3x2':
+      $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+      $etran_board_data['cells'][1][3] = $board_data['cells'][1][2];
+      $etran_board_data['cells'][2][1] = $board_data['cells'][2][1];
+      $etran_board_data['cells'][2][3] = $board_data['cells'][2][2];
+      $etran_board_data['cells'][3][1] = $board_data['cells'][3][1];
+      $etran_board_data['cells'][3][3] = $board_data['cells'][3][2];
+      break;
+    case '3x3':
+      $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
+      $etran_board_data['cells'][1][3] = $board_data['cells'][1][2];
+      $etran_board_data['cells'][2][1] = $board_data['cells'][1][3];
+      $etran_board_data['cells'][2][3] = $board_data['cells'][2][1];
+      $etran_board_data['cells'][3][1] = $board_data['cells'][2][3];
+      $etran_board_data['cells'][3][3] = $board_data['cells'][3][1];
+      $etran_board_data['cells'][3][1] = $board_data['cells'][3][2];
+      $etran_board_data['cells'][3][3] = $board_data['cells'][3][3];
+      break;
   }
 
 
