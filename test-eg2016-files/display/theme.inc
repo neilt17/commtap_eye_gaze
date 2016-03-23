@@ -27,6 +27,13 @@ function theme_cell($board_cell) {
   return theme_render_template('cell.tpl.php', $board_cell);
 }
 
+function theme_print_cell($board_cell) {
+  if ($board_cell['blank']) {
+    return theme_render_template('blank-cell.tpl.php', $board_cell);
+  }
+  return theme_render_template('print-cell.tpl.php', $board_cell);
+}
+
 function theme_table($header = array(), $rows) {
   $html = '<table>';
   if (!empty($header)) {

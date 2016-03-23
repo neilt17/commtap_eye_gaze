@@ -409,30 +409,31 @@ function aac_print_etran_board($set, $board) {
       break;
     case '3x3':
       $etran_board_data['cells'][1][1] = $board_data['cells'][1][1];
-      $etran_board_data['cells'][1][3] = $board_data['cells'][1][2];
-      $etran_board_data['cells'][2][1] = $board_data['cells'][1][3];
-      $etran_board_data['cells'][2][3] = $board_data['cells'][2][1];
-      $etran_board_data['cells'][3][1] = $board_data['cells'][2][3];
-      $etran_board_data['cells'][3][3] = $board_data['cells'][3][1];
-      $etran_board_data['cells'][3][1] = $board_data['cells'][3][2];
+      $etran_board_data['cells'][1][2] = $board_data['cells'][1][2];
+      $etran_board_data['cells'][1][3] = $board_data['cells'][1][3];
+      $etran_board_data['cells'][2][1] = $board_data['cells'][2][1];
+      $etran_board_data['cells'][2][3] = $board_data['cells'][2][3];
+      $etran_board_data['cells'][3][1] = $board_data['cells'][3][1];
+      $etran_board_data['cells'][3][2] = $board_data['cells'][3][2];
       $etran_board_data['cells'][3][3] = $board_data['cells'][3][3];
       break;
   }
 
 
+  // printing as (non-nested) table layout - so can convert layout to Word.
+  $variables = array();
   for ($i = 1; $i <= 3; $i++) {
     for ($j = 1; $j <= 3; $j++) {
       if (empty($etran_board_data['cells'][$i][$j])) {
-        $content .= theme_cell(array('blank' => TRUE));
+        $variables['cell_' . $i . '_' . $j ] = theme_print_cell(array('blank' => TRUE));
       }
       else {
-        $content .= theme_cell($etran_board_data['cells'][$i][$j]);
+        $variables['cell_' . $i . '_' . $j ] = theme_print_cell($etran_board_data['cells'][$i][$j]);
       }
     }
     $content .= '<div class="clear"></div>';
   }
 
-  $variables['content'] = $content;
   return theme_render_template('print-board.tpl.php', $variables);
 
 

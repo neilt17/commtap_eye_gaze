@@ -1,0 +1,27 @@
+img {
+  height: 120px;
+}
+
+div.display-text {
+  margin: auto;
+}
+
+body {
+  font-family: arial;
+  font-size: 200%;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid grey;
+  text-align: center;
+  margin: 0;
+}
+
+.row-1.col-1, .row-1.col-5, .row-1.col-9 {
+  width: 190px;
+  height: 190px;
+}
