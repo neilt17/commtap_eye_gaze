@@ -39,3 +39,16 @@ The pages use HTML5 for:
 There is no problem with the timer image for HTML5 compatible browsers - should work for all modern browsers;
 
 The &lt;audio&gt; element is implemented in modern browsers, however on mobile devices, only a click action can lead to audio being played - mouse moving in or out of a cell will not work. As eye gaze systems currently only interact with Windows tablets/PCs this is not really a problem. If these AAC pages are to be used on mobile then the mouse access setting should be enabled.
+
+<h3>Technical</h3>
+<h4>Creating sound on mac</h4>
+* Set up on local mac (not generally available): findsymbol "notes" - finds
+symbol and converts to png in current directory
+* Convert emf to png using LibreOffice:
+/Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to png "/Users/neilthompson/Documents/Widgit/WidResources/graphics_co/england/uk wrebus/list.emf"
+* Using speak on mac (similar to espeak on linux):
+speak -venglish_rp -p90 "spinning patterns" -wspinning_patterns.wav
+
+
+
+
