@@ -26,8 +26,10 @@
  */
 
 function show_page() {
+  $global_settings = global_settings();
   if (empty($_GET['set'])) {
-    $content = show_set_list();
+    $content = '<p>' . l('Explanation', 'info/explanation.php') . '</p>';
+    $content .= show_set_list();
   }
   else {
     if (empty($_GET['board'])) {

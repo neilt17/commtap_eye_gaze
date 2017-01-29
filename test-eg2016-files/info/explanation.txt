@@ -45,10 +45,44 @@ The &lt;audio&gt; element is implemented in modern browsers, however on mobile d
 * Set up on local mac (not generally available): findsymbol "notes" - finds
 symbol and converts to png in current directory
 * Convert emf to png using LibreOffice:
-/Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to png "/Users/neilthompson/Documents/Widgit/WidResources/graphics_co/england/uk wrebus/list.emf"
+/Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to png "/Users/Fred/Documents/Symbols/list.emf"
 * Using speak on mac (similar to espeak on linux):
 speak -venglish_rp -p90 "spinning patterns" -wspinning_patterns.wav
 
+<h4>Adding pages</h4>
+
+<b>This applies only if you have access to files on the server.</b>
+
+This is a rough and ready way for creating pages for test purposes.
+
+Page sets are contained in the "boards" directory, each directory within this directory is a page set. A page set contains a set of directories which correspond to cells on a page: each cell within this directory has its own directory. The cell directories are named as follows: &gt;row-index>,&gt;column-index>-&gt;label>. The cell directory contains the following files: "display[.EXTENSION]" - contains the text to display; "sound|audio[.EXTENSION]" - the sound file to play; "image[.EXTENSION]" - the image to show.
 
 
-
+static
+--boards
+----my-set1
+------my-page1
+--------1,1-cell1
+----------display.txt
+----------image.svg
+----------sound.wav
+--------1,2-cell2
+----------display.txt
+----------image.svg
+----------sound.wav
+------my-page2
+--------1,1-cell1
+----------display.txt
+----------image.svg
+----------sound.wav
+--------1,2-cell2
+----------display.txt
+----------image.svg
+----------sound.wav
+----my-set2
+------my-page1
+--------1,1-cell1
+----------display.txt
+----------image.svg
+----------sound.wav
+etc.
