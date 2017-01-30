@@ -24,6 +24,11 @@ Some sample communication pages have been made. These demonstrate:
 <li>After a message is played, a cell can be re-triggered (speak again) if the user gazes away from the cell and then back into it, or, after a configurable delay, if they move their gaze a little within the cell.</li>
 </ul>
 
+<h3>Taking the dwell timer further</h3>
+
+Could also record where the dwell timer has got to if a user gazes outside of the cell and restart it from that point if they gaze back into it.
+
+
 <h3>Voices</h3>
 Uses eSpeak voices - can be scripted server side, saved into WAV files and converted again (using LAME) into mp3 files. mp3 is theoretically compatible with more browsers - allegedly all - though this may depend on the OS. See also below.
 
