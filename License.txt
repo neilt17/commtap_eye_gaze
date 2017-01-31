@@ -1,7 +1,9 @@
-Note this applies to all files in the project except those which contain 
+Note this applies to all text files in the project except those which contain
 a note stating a different licence. In particular the following are NOT
 covered by this licence:
 - jquery*.js
+- test-eg-2016-files/static/speech/*
+- test-eg-2016-files/static/symbols/*
 
                      GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
