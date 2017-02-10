@@ -1,5 +1,7 @@
 <a href="/test-eg2016-files/display.php">Go straight to the AAC page sets</a>
 
+<a href="https://github.com/neilt17/commtap_eye_gaze">Project on GitHub</a>
+
 <h2>Explanation, background</h2>
 The purpose of this is to:
 <ul>
